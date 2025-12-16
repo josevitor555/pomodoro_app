@@ -16,31 +16,39 @@ class TaskListScreen extends StatefulWidget {
 
 class _TaskListScreenState extends State<TaskListScreen> {
   // Estado principal do aplicativo, gerenciado por setState()
-  List<Task> _tasks = [
+  final List<Task> _tasks = [
     // Dados de exemplo para iniciar
     Task(
       title: 'Design System Review',
       description: 'Create variables for dark mode',
       priority: 'High',
+      createdAt: DateTime(2025, 12, 10), // Data de exemplo
     ),
     Task(
       title: 'Weekly Standup',
       description: 'Prepare slide deck',
       priority: 'Medium',
       hasPomodoro: false,
+      createdAt: DateTime(2025, 12, 12), // Data de exemplo
     ),
     Task(
       title: 'Call Mom',
       category: 'Personal',
       isCompleted: true,
       hasPomodoro: false,
+      createdAt: DateTime(2025, 12, 14), // Data de exemplo
     ),
-    Task(title: 'Email Client Feedback', priority: 'Low'),
+    Task(
+      title: 'Email Client Feedback',
+      priority: 'Low',
+      createdAt: DateTime(2025, 12, 15), // Data de exemplo
+    ),
     Task(
       title: 'Grocery Shopping',
       description: 'Milk, Eggs, Bread',
       priority: 'Low',
       hasPomodoro: false,
+      createdAt: DateTime(2025, 12, 16), // Data de exemplo
     ),
   ];
 
@@ -186,11 +194,14 @@ class _TaskListScreenState extends State<TaskListScreen> {
         actions: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              icon: const Icon(Icons.sort, color: Color(0xFF181818)),
+              icon: Icon(
+                Icons.sort,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
               onPressed: () {
                 // Adicionar funcionalidade de ordenação
               },
@@ -224,12 +235,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
           BottomNavigationBarItem(
             icon: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.check_circle_outline,
-                color: Color(0xFF181818),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             label: 'Tasks',
@@ -237,37 +248,46 @@ class _TaskListScreenState extends State<TaskListScreen> {
           BottomNavigationBarItem(
             icon: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.timer_outlined, color: Color(0xFF181818)),
+              child: Icon(
+                Icons.timer_outlined,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             label: 'Timer',
           ),
           BottomNavigationBarItem(
             icon: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.bar_chart, color: Color(0xFF181818)),
+              child: Icon(
+                Icons.bar_chart,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             label: 'Stats',
           ),
           BottomNavigationBarItem(
             icon: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.settings, color: Color(0xFF181818)),
+              child: Icon(
+                Icons.settings,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             label: 'Settings',
           ),
         ],
         currentIndex: _currentIndex,
         selectedItemColor: Theme.of(context).colorScheme.secondary,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: Theme.of(context).colorScheme.outline,
         onTap: _onItemTapped,
       ),
     );

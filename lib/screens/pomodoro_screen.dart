@@ -146,9 +146,13 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text(
+          Text(
             'Pomodoro Timer',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           const SizedBox(height: 20),
           // Exibe a tarefa e o tipo de ciclo
@@ -157,21 +161,22 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.check_circle_outline,
                   size: 16,
-                  color: Color(0xFF181818),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(width: 8),
               Text(
                 'Current Task: $currentTaskTitle',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -179,39 +184,84 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
           ),
           Text(
             'Cycle: $_cycleType',
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 40),
 
-          // Círculo do Timer (Representação Visual do Tempo)
-          SizedBox(
-            width: 250,
-            height: 250,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                // Progresso do Círculo
-                CircularProgressIndicator(
-                  value:
-                      1.0 -
-                      (_totalSecondsRemaining / (_currentFocusMinutes * 60)),
-                  strokeWidth: 10,
-                  backgroundColor: Colors.grey[200],
+          // Card do Timer Principal com Borda de Progresso
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // 1. O Círculo de Progresso (A Borda)
+              SizedBox(
+                width: 280,
+                height: 280,
+                child: CircularProgressIndicator(
+                  // Calcula o progresso inverso para a borda sumir conforme o tempo passa
+                  value: _totalSecondsRemaining / (_currentFocusMinutes * 60),
+                  strokeWidth: 8, // Espessura da borda
+                  backgroundColor: Theme.of(context).colorScheme.surface
+                      .withOpacity(0.3), // Cor da trilha (fundo)
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).colorScheme.secondary,
-                  ),
+                    Theme.of(
+                      context,
+                    ).colorScheme.primary, // Usar cor primária do tema
+                  ), // Cor do progresso
+                  strokeCap:
+                      StrokeCap.round, // Deixa as pontas da borda arredondadas
                 ),
-                // Tempo Exibido (RF-2.1)
-                Text(
-                  TimeFormatter.formatDuration(_totalSecondsRemaining),
-                  style: const TextStyle(
-                    fontSize: 64,
-                    fontWeight:
-                        FontWeight.w200, // Light weight for minimal look
-                  ),
+              ),
+
+              // 2. O Card Branco Interno
+              Container(
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.surface, // Usar cor do tema
+                  shape: BoxShape
+                      .circle, // Mudamos para círculo para combinar com a borda
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      TimeFormatter.formatDuration(_totalSecondsRemaining),
+                      style: TextStyle(
+                        fontSize: 64,
+                        fontWeight: FontWeight.w200,
+                        fontFeatures: [FontFeature.tabularFigures()],
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface, // Usar cor do tema
+                      ),
+                    ),
+                    Text(
+                      _cycleType == 'Work' ? "WORK" : "BREAK",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.outline, // Usar cor do tema
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
 
           const SizedBox(height: 40),
@@ -223,7 +273,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
               // Botão Play/Pause
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -232,7 +282,9 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                         ? Icons.pause_circle_filled
                         : Icons.play_circle_filled,
                     size: 80,
-                    color: const Color(0xFF181818),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary, // Usar cor primária do tema
                   ),
                   onPressed: _toggleTimer,
                 ),
@@ -241,14 +293,16 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
               // Botão Reset
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.replay_circle_filled,
                     size: 50,
-                    color: Color(0xFF181818),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary, // Usar cor primária do tema
                   ),
                   onPressed: _initializeTimerState,
                 ),

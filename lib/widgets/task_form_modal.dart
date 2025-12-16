@@ -52,17 +52,28 @@ class _TaskFormModalState extends State<TaskFormModal> {
       // Se for nova, retornamos uma nova instância (como antes).
       Task resultTask =
           widget.taskToEdit ??
-          Task(title: _title); // Cria um placeholder ou usa a original
+          Task(
+            title: _title,
+            description: _description,
+            priority: _priority,
+            category: _category,
+            hasPomodoro: _hasPomodoro,
+            focusDurationMinutes: _hasPomodoro ? _focusDurationMinutes : 0,
+            // A data de criação será definida automaticamente no construtor da Task
+          );
 
-      // Atualiza os atributos da tarefa (seja nova ou a ser editada)
-      resultTask.title = _title;
-      resultTask.description = _description;
-      resultTask.priority = _priority;
-      resultTask.category = _category;
-      resultTask.hasPomodoro = _hasPomodoro;
-      resultTask.focusDurationMinutes = _hasPomodoro
-          ? _focusDurationMinutes
-          : 0;
+      // Se estivermos editando, precisamos atualizar os valores manualmente
+      if (widget.taskToEdit != null) {
+        resultTask.title = _title;
+        resultTask.description = _description;
+        resultTask.priority = _priority;
+        resultTask.category = _category;
+        resultTask.hasPomodoro = _hasPomodoro;
+        resultTask.focusDurationMinutes = _hasPomodoro
+            ? _focusDurationMinutes
+            : 0;
+        // A data de criação permanece a mesma para tarefas editadas
+      }
 
       // Retorna a tarefa atualizada/criada.
       Navigator.of(context).pop(resultTask);
@@ -77,7 +88,10 @@ class _TaskFormModalState extends State<TaskFormModal> {
       decoration: InputDecoration(
         labelText: 'Focus Duration (minutes)',
         suffixText: 'min',
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+        ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -108,9 +122,9 @@ class _TaskFormModalState extends State<TaskFormModal> {
           // Garante que o teclado não cubra o formulário
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Form(
           key: _formKey,
@@ -124,16 +138,19 @@ class _TaskFormModalState extends State<TaskFormModal> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text(
+                    child: Text(
                       'Cancel',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
                     ),
                   ),
                   Text(
                     modalTitle,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   TextButton(
@@ -148,7 +165,6 @@ class _TaskFormModalState extends State<TaskFormModal> {
                   ),
                 ],
               ),
-              const Divider(height: 1, thickness: 1),
               const SizedBox(height: 16),
 
               // Campo Title
@@ -159,9 +175,10 @@ class _TaskFormModalState extends State<TaskFormModal> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                 ),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -182,6 +199,9 @@ class _TaskFormModalState extends State<TaskFormModal> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                 ),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 minLines: 1,
                 maxLines: 3,
                 onSaved: (value) {
@@ -190,12 +210,14 @@ class _TaskFormModalState extends State<TaskFormModal> {
               ),
 
               const SizedBox(height: 20),
-              const Divider(height: 1, thickness: 1),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
                   'DETAILS',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                 ),
               ),
 
@@ -205,14 +227,36 @@ class _TaskFormModalState extends State<TaskFormModal> {
                   Expanded(
                     child: DropdownButtonFormField<String>(
                       value: _priority,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Priority',
-                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
                       ),
                       items: _priorities.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -227,14 +271,36 @@ class _TaskFormModalState extends State<TaskFormModal> {
                   Expanded(
                     child: DropdownButtonFormField<String>(
                       value: _category,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Category',
-                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
                       ),
                       items: _categories.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -249,12 +315,14 @@ class _TaskFormModalState extends State<TaskFormModal> {
               ),
 
               const SizedBox(height: 20),
-              const Divider(height: 1, thickness: 1),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
                   'POMODORO',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                 ),
               ),
 
@@ -262,7 +330,13 @@ class _TaskFormModalState extends State<TaskFormModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Enable Pomodoro', style: TextStyle(fontSize: 16)),
+                  Text(
+                    'Enable Pomodoro',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
                   Switch(
                     value: _hasPomodoro,
                     onChanged: (bool value) {
@@ -270,7 +344,9 @@ class _TaskFormModalState extends State<TaskFormModal> {
                         _hasPomodoro = value;
                       });
                     },
-                    activeColor: Theme.of(context).colorScheme.secondary,
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    inactiveThumbColor: Theme.of(context).colorScheme.surface,
+                    inactiveTrackColor: Theme.of(context).colorScheme.outline,
                   ),
                 ],
               ),

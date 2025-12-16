@@ -35,7 +35,7 @@ class TaskTile extends StatelessWidget {
           border: Border.all(
             color: task.isCompleted
                 ? Theme.of(context).colorScheme.secondary
-                : Colors.grey.shade400,
+                : Theme.of(context).colorScheme.outline,
             width: 2,
           ),
           color: task.isCompleted
@@ -67,18 +67,25 @@ class TaskTile extends StatelessWidget {
         priorityColor = Colors.grey;
     }
 
+    // Formatação da data de criação
+    final formattedDate =
+        '${task.createdAt.day}/${task.createdAt.month}/${task.createdAt.year}';
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+      // Aumentar o espaçamento vertical entre os itens
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: GestureDetector(
         onDoubleTap: onEdit,
         onLongPress: onDelete,
         onTap: onSetActive,
         child: Container(
-          padding: const EdgeInsets.all(12.0),
-          // 2. MUDANÇA: Estilização arredondada e sombra (minimalista)
+          padding: const EdgeInsets.all(16.0), // Aumentar o padding interno
+          // 2. MUDANÇA: Estilização com bordas arredondadas completas e sombra (minimalista)
           decoration: BoxDecoration(
-            color: Colors.white, // Fundo branco para se destacar do FAFAFA
-            borderRadius: BorderRadius.circular(15),
+            color: Theme.of(context).colorScheme.surface, // Usar cor do tema
+            borderRadius: BorderRadius.circular(
+              20,
+            ), // Bordas mais arredondadas (100% full)
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05), // Sombra leve
@@ -90,7 +97,7 @@ class TaskTile extends StatelessWidget {
             border: Border.all(
               color: isActive
                   ? Theme.of(context).colorScheme.secondary.withOpacity(0.5)
-                  : Colors.transparent,
+                  : Theme.of(context).colorScheme.outline, // Usar cor do tema
               width: 1.5,
             ),
           ),
@@ -113,12 +120,14 @@ class TaskTile extends StatelessWidget {
                             : TextDecoration.none,
                         fontSize: 16,
                         fontWeight: FontWeight.w500, // Levemente mais leve
-                        color: task.isCompleted ? Colors.grey : Colors.black,
+                        color: task.isCompleted
+                            ? Theme.of(context).colorScheme.outline
+                            : Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    // Detalhes (Priority & Description/Category)
+                    // Detalhes (Priority & Description/Category & Date)
                     // ... (resto do código de detalhes)
-                    // Detalhes (Priority & Description/Category)
+                    // Detalhes (Priority & Description/Category & Date)
                     Row(
                       children: [
                         // Prioridade (RF-1.4)
@@ -150,11 +159,25 @@ class TaskTile extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12,
                             color: task.isCompleted
-                                ? Colors.grey
-                                : Colors.grey[600],
+                                ? Theme.of(context).colorScheme.outline
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withOpacity(0.7),
                           ),
                         ),
                       ],
+                    ),
+                    // Data de criação
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Text(
+                        'Criado em: $formattedDate',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Theme.of(context).colorScheme.outline,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -164,11 +187,17 @@ class TaskTile extends StatelessWidget {
               if (!task.isCompleted)
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surface.withOpacity(0.7),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.edit, size: 20, color: Colors.grey),
+                    icon: Icon(
+                      Icons.edit,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
                     onPressed: onEdit,
                   ),
                 ),
@@ -177,7 +206,9 @@ class TaskTile extends StatelessWidget {
               if (task.hasPomodoro && !task.isCompleted)
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue[100],
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Padding(
@@ -185,7 +216,7 @@ class TaskTile extends StatelessWidget {
                     child: Icon(
                       Icons.timer,
                       size: 20,
-                      color: Colors.blue.shade400,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                 ),
