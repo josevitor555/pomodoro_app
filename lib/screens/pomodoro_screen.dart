@@ -155,10 +155,16 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.check_circle_outline,
-                size: 16,
-                color: Color(0xFF181818),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check_circle_outline,
+                  size: 16,
+                  color: Color(0xFF181818),
+                ),
               ),
               const SizedBox(width: 8),
               Text(
@@ -215,25 +221,37 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Botão Play/Pause
-              IconButton(
-                icon: Icon(
-                  _isRunning
-                      ? Icons.pause_circle_filled
-                      : Icons.play_circle_filled,
-                  size: 80,
-                  color: const Color(0xFF181818),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  shape: BoxShape.circle,
                 ),
-                onPressed: _toggleTimer,
+                child: IconButton(
+                  icon: Icon(
+                    _isRunning
+                        ? Icons.pause_circle_filled
+                        : Icons.play_circle_filled,
+                    size: 80,
+                    color: const Color(0xFF181818),
+                  ),
+                  onPressed: _toggleTimer,
+                ),
               ),
               const SizedBox(width: 40),
               // Botão Reset
-              IconButton(
-                icon: const Icon(
-                  Icons.replay_circle_filled,
-                  size: 50,
-                  color: Color(0xFF181818),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  shape: BoxShape.circle,
                 ),
-                onPressed: _initializeTimerState,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.replay_circle_filled,
+                    size: 50,
+                    color: Color(0xFF181818),
+                  ),
+                  onPressed: _initializeTimerState,
+                ),
               ),
             ],
           ),

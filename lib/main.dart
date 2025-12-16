@@ -19,7 +19,7 @@ class TaskPomodoroApp extends StatelessWidget {
         // Tema iOS-like (White Theme)
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: const Color(
-          0xFFF5F5F5,
+          0xFFFAFAFA,
         ), // Background mais suave
         appBarTheme: const AppBarTheme(
           color: Colors.white,
@@ -32,8 +32,10 @@ class TaskPomodoroApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.black),
         ),
         // Cor de destaque (Ação) em azul sutil, mas vibrante.
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-            .copyWith(
+        colorScheme:
+            ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 35, 35, 36),
+            ).copyWith(
               secondary: Colors.blue, // Usado para botões e acentos.
             ),
         useMaterial3: true,

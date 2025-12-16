@@ -136,19 +136,23 @@ class _TaskListScreenState extends State<TaskListScreen> {
           ),
         ),
         Expanded(
-          child: ListView(
+          child: ListView.builder(
+            // MUDANÇA: Use ListView.builder em vez de ListView.separated
+            itemCount: _tasks.length,
+            // MUDANÇA: Remover o separatorBuilder
+            // separatorBuilder: (context, index) => const Divider(height: 1, thickness: 1, color: Colors.grey),
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            children: [
-              for (final task in _tasks)
-                TaskTile(
-                  task: task,
-                  isActive: _activeTask == task,
-                  onToggleComplete: () => _toggleTaskCompletion(task),
-                  onDelete: () => _deleteTask(task),
-                  onSetActive: () => _setActiveTask(task),
-                  onEdit: () => _editTask(task), // Chamada para a nova função
-                ),
-            ],
+            itemBuilder: (context, index) {
+              final task = _tasks[index];
+              return TaskTile(
+                task: task,
+                isActive: _activeTask == task,
+                onToggleComplete: () => _toggleTaskCompletion(task),
+                onDelete: () => _deleteTask(task),
+                onSetActive: () => _setActiveTask(task),
+                onEdit: () => _editTask(task), // Chamada para a nova função
+              );
+            },
           ),
         ),
       ],
@@ -180,11 +184,17 @@ class _TaskListScreenState extends State<TaskListScreen> {
         title: const Text(''),
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.sort, color: Color(0xFF181818)),
-            onPressed: () {
-              // Adicionar funcionalidade de ordenação
-            },
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.sort, color: Color(0xFF181818)),
+              onPressed: () {
+                // Adicionar funcionalidade de ordenação
+              },
+            ),
           ),
         ],
       ),
@@ -195,34 +205,63 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
       // Botão de adição RF-1.1
       floatingActionButton: _currentIndex == 0
-          ? FloatingActionButton(
-              onPressed: _openAddTaskModal,
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              child: const Icon(Icons.add, color: Colors.white),
+          ? Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.add, color: Colors.white),
+                onPressed: _openAddTaskModal,
+              ),
             )
           : null,
 
       // Barra de navegação inferior
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed, // Permite mais de 3 itens
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.check_circle_outline,
-              color: Color(0xFF181818),
+            icon: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.check_circle_outline,
+                color: Color(0xFF181818),
+              ),
             ),
             label: 'Tasks',
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.timer_outlined, color: Color(0xFF181818)),
+            icon: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.timer_outlined, color: Color(0xFF181818)),
+            ),
             label: 'Timer',
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.bar_chart, color: Color(0xFF181818)),
+            icon: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.bar_chart, color: Color(0xFF181818)),
+            ),
             label: 'Stats',
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.settings, color: Color(0xFF181818)),
+            icon: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.settings, color: Color(0xFF181818)),
+            ),
             label: 'Settings',
           ),
         ],
