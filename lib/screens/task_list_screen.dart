@@ -218,7 +218,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
       floatingActionButton: _currentIndex == 0
           ? Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.primary,
                 shape: BoxShape.circle,
               ),
               child: IconButton(
@@ -228,67 +228,110 @@ class _TaskListScreenState extends State<TaskListScreen> {
             )
           : null,
 
-      // Barra de navegação inferior
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Permite mais de 3 itens
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.check_circle_outline,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+      // Barra de navegação inferior com espaçamento melhorado e background suave
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        margin: const EdgeInsets.all(
+          10.0,
+        ), // Margem externa para separar do resto da tela
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface.withOpacity(
+            0.3,
+          ), // Background com tonalidade baixa
+          borderRadius: BorderRadius.circular(20.0), // Bordas arredondadas
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05), // Sombra leve
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
             ),
-            label: 'Tasks',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-                shape: BoxShape.circle,
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors
+                .transparent, // Transparente para mostrar o background do container pai
+            elevation: 0, // Remover elevação para evitar sombra duplicada
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Container(
+                  padding: const EdgeInsets.all(
+                    12.0,
+                  ), // Aumentar espaçamento interno
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.black, // Ícone preto
+                  ),
+                ),
+                label: 'Tasks',
               ),
-              child: Icon(
-                Icons.timer_outlined,
-                color: Theme.of(context).colorScheme.onSurface,
+              BottomNavigationBarItem(
+                icon: Container(
+                  padding: const EdgeInsets.all(
+                    12.0,
+                  ), // Aumentar espaçamento interno
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.timer_outlined,
+                    color: Colors.black, // Ícone preto
+                  ),
+                ),
+                label: 'Timer',
               ),
+              BottomNavigationBarItem(
+                icon: Container(
+                  padding: const EdgeInsets.all(
+                    12.0,
+                  ), // Aumentar espaçamento interno
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.bar_chart,
+                    color: Colors.black, // Ícone preto
+                  ),
+                ),
+                label: 'Stats',
+              ),
+              BottomNavigationBarItem(
+                icon: Container(
+                  padding: const EdgeInsets.all(
+                    12.0,
+                  ), // Aumentar espaçamento interno
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.settings,
+                    color: Colors.black, // Ícone preto
+                  ),
+                ),
+                label: 'Settings',
+              ),
+            ],
+            currentIndex: _currentIndex,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white.withOpacity(0.7),
+            selectedLabelStyle: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
-            label: 'Timer',
+            unselectedLabelStyle: const TextStyle(color: Colors.white),
+            onTap: _onItemTapped,
           ),
-          BottomNavigationBarItem(
-            icon: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.bar_chart,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-            label: 'Stats',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.settings,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _currentIndex,
-        selectedItemColor: Theme.of(context).colorScheme.secondary,
-        unselectedItemColor: Theme.of(context).colorScheme.outline,
-        onTap: _onItemTapped,
+        ),
       ),
     );
   }

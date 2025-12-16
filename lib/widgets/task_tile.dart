@@ -55,16 +55,22 @@ class TaskTile extends StatelessWidget {
     Color priorityColor;
     switch (task.priority.toLowerCase()) {
       case 'high':
-        priorityColor = Colors.red.shade700;
+        priorityColor = Theme.of(
+          context,
+        ).colorScheme.error; // Usar cor de erro para alta prioridade
         break;
       case 'medium':
-        priorityColor = Colors.orange.shade700;
+        priorityColor = Theme.of(
+          context,
+        ).colorScheme.primary; // Usar cor primária para média prioridade
         break;
       case 'low':
-        priorityColor = Colors.blue.shade700;
+        priorityColor = Theme.of(
+          context,
+        ).colorScheme.secondary; // Usar cor secundária para baixa prioridade
         break;
       default:
-        priorityColor = Colors.grey;
+        priorityColor = Theme.of(context).colorScheme.outline;
     }
 
     // Formatação da data de criação
@@ -96,7 +102,7 @@ class TaskTile extends StatelessWidget {
             ],
             border: Border.all(
               color: isActive
-                  ? Theme.of(context).colorScheme.secondary.withOpacity(0.5)
+                  ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
                   : Theme.of(context).colorScheme.outline, // Usar cor do tema
               width: 1.5,
             ),
@@ -108,7 +114,6 @@ class TaskTile extends StatelessWidget {
 
               Expanded(
                 child: Column(
-                  // ... (resto da coluna de texto)
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Título
@@ -125,9 +130,6 @@ class TaskTile extends StatelessWidget {
                             : Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    // Detalhes (Priority & Description/Category & Date)
-                    // ... (resto do código de detalhes)
-                    // Detalhes (Priority & Description/Category & Date)
                     Row(
                       children: [
                         // Prioridade (RF-1.4)
@@ -174,7 +176,9 @@ class TaskTile extends StatelessWidget {
                         'Criado em: $formattedDate',
                         style: TextStyle(
                           fontSize: 11,
-                          color: Theme.of(context).colorScheme.outline,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface, // Corrigido para usar onSurface
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -196,7 +200,9 @@ class TaskTile extends StatelessWidget {
                     icon: Icon(
                       Icons.edit,
                       size: 20,
-                      color: Theme.of(context).colorScheme.outline,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface, // Corrigido para usar onSurface
                     ),
                     onPressed: onEdit,
                   ),
@@ -225,7 +231,11 @@ class TaskTile extends StatelessWidget {
               // if (isActive)
               //   Padding(
               //     padding: const EdgeInsets.only(left: 8.0),
-              //     child: Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.secondary),
+              //     child: Icon(
+              //       Icons.circle,
+              //       size: 8,
+              //       color: Theme.of(context).colorScheme.primary,
+              //     ),
               //   ),
             ],
           ),

@@ -87,12 +87,20 @@ class _TaskFormModalState extends State<TaskFormModal> {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: 'Focus Duration (minutes)',
+        labelStyle: TextStyle(color: Theme.of(context).colorScheme.outline),
         suffixText: 'min',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
         ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+        ),
       ),
+      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter a duration.';
@@ -158,7 +166,7 @@ class _TaskFormModalState extends State<TaskFormModal> {
                     child: Text(
                       'Save',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

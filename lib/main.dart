@@ -16,41 +16,52 @@ class TaskPomodoroApp extends StatelessWidget {
     return MaterialApp(
       title: 'Task & Pomodoro Tracker',
       themeMode: ThemeMode.system, // Alterna entre Light e Dark automaticamente
-      // --- TEMA LIGHT ---
+      // --- TEMA LIGHT (Atualizado com a nova paleta) ---
       theme: ThemeData(
         brightness: Brightness.light,
-        scaffoldBackgroundColor: const Color(0xFFFAFAFA),
-        colorScheme:
-            const ColorScheme.light(
-              primary: Color(0xFF7F4D4D),
-              surface: Color(0xFFFDFDFD),
-            ).copyWith(
-              secondary: Colors.blue, // Usado para botões e acentos.
-            ),
+        scaffoldBackgroundColor: const Color(
+          0xFFFAFAFA,
+        ), // --background (#FAFAFA)
+
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF7F4D4D), // --primary (Tom Terroso)
+          onPrimary: Colors.white, // Texto sobre primary
+
+          secondary: Color(0xFFF2E7D5), // --secondary (Detalhes suaves)
+          onSecondary: Color(0xFF3D3D3D), // Texto sobre secondary
+
+          surface: Color(0xFFFDFDFD), // --card (#FDFDFD)
+          onSurface: Color(0xFF3D3D3D), // --foreground (#3D3D3D)
+
+          outline: Color(0xFFF2F2F2), // --muted (#F2F2F2)
+          error: Color(0xFFE53935), // --destructive (#E53935)
+        ),
+
         appBarTheme: const AppBarTheme(
-          color: Colors.white,
+          backgroundColor: Color(0xFFFAFAFA), // --background
           elevation: 0,
           titleTextStyle: TextStyle(
-            color: Colors.black,
+            color: Color(0xFF3D3D3D), // --foreground
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          iconTheme: IconThemeData(color: Colors.black),
+          iconTheme: IconThemeData(color: Color(0xFF3D3D3D)), // --foreground
         ),
-        useMaterial3: true,
 
         // Adaptação dos Cards para o modo Light
         cardTheme: CardThemeData(
-          color: const Color(0xFFFDFDFD),
+          color: const Color(0xFFFDFDFD), // --card
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: const BorderSide(
-              color: Color(0xFFE0E0E0),
+              color: Color(0xFFF2F2F2),
               width: 1,
-            ), // Borda sutil
+            ), // --muted
           ),
         ),
+
+        useMaterial3: true,
       ),
 
       // --- TEMA DARK (Extraído do seu CSS) ---
@@ -69,6 +80,7 @@ class TaskPomodoroApp extends StatelessWidget {
           onSurface: Color(0xFFF2F2F2), // --foreground
 
           outline: Color(0xFF333538), // --border
+          error: Color(0xFFE53935), // --destructive
         ),
 
         appBarTheme: const AppBarTheme(
@@ -91,7 +103,7 @@ class TaskPomodoroApp extends StatelessWidget {
             side: const BorderSide(
               color: Color(0xFF333538),
               width: 1,
-            ), // Borda sutil
+            ), // --border
           ),
         ),
       ),
